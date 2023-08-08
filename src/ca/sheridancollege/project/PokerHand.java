@@ -40,6 +40,7 @@ public class PokerHand {
 
     private boolean isRoyalFlush() {
         // Implement logic to check for a royal flush
+        
     }
 
     private boolean isStraightFlush() {
