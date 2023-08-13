@@ -1,8 +1,15 @@
-package ca.sheridancollege.project;
+package ca.sheridancollege.project.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import ca.sheridancollege.project.model.Game;
+import ca.sheridancollege.project.model.GroupOfCards;
+import ca.sheridancollege.project.model.Player;
+import ca.sheridancollege.project.model.PokerCard;
+import ca.sheridancollege.project.model.PokerHandRank;
+import ca.sheridancollege.project.model.PokerPlayer;
 
 public class PokerGame extends Game {
 

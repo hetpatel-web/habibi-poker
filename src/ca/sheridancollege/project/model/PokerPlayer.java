@@ -1,4 +1,6 @@
-package ca.sheridancollege.project;
+package ca.sheridancollege.project.model;
+
+import ca.sheridancollege.project.controller.PokerHand;
 
 public class PokerPlayer extends Player {
 

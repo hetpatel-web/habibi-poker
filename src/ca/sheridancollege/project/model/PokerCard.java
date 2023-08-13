@@ -1,4 +1,4 @@
-package ca.sheridancollege.project;
+package ca.sheridancollege.project.model;
 
 public class PokerCard extends Card implements Comparable<PokerCard> {
 
@@ -22,6 +22,7 @@ public class PokerCard extends Card implements Comparable<PokerCard> {
     public int compareTo(PokerCard card) {
         return Integer.compare(this.rank, card.rank);
     }
+
     @Override
     public String toString() {
         // Implement the toString() method to display card information

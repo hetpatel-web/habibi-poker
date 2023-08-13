@@ -1,8 +1,11 @@
-package ca.sheridancollege.project;
+package ca.sheridancollege.project.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import ca.sheridancollege.project.model.PokerCard;
+import ca.sheridancollege.project.model.PokerHandRank;
 
 public class PokerHand {
 
@@ -40,7 +43,7 @@ public class PokerHand {
 
     private boolean isRoyalFlush() {
         // Implement logic to check for a royal flush
-        
+
     }
 
     private boolean isStraightFlush() {
