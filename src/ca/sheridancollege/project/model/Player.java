@@ -48,4 +48,9 @@ public abstract class Player {
      */
     public abstract void play();
 
+    /**
+     * When the player is eliminated, this method is called to set the player's
+     * status to eliminated.
+     */
+    public abstract boolean isEliminated();
 }

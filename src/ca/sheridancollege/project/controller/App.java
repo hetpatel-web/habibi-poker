@@ -1,4 +1,4 @@
-package ca.sheridancollege.project;
+package ca.sheridancollege.project.controller;
 
 import ca.sheridancollege.project.view.StartPokerGame;
 
