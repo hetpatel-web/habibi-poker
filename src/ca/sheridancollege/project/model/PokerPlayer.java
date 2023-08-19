@@ -4,6 +4,9 @@ public class PokerPlayer extends Player {
 
     private PokerHand hand;
     private int chips;
+    private boolean eliminated;
+    private boolean folded;
+    private int lastCalledBet = 0;
 
     public PokerPlayer(String name) {
         super(name);
@@ -36,7 +39,28 @@ public class PokerPlayer extends Player {
 
     // Returns true if the player has no chips left
     public boolean isEliminated() {
-        return chips <= 0;
+        return eliminated;
+    }
+
+    public void setEliminated(boolean eliminated) {
+        this.eliminated = eliminated;
+    }
+
+    // Returns true if the player has folded
+    public boolean hasFolded() {
+        return folded;
+    }
+
+    public void fold() {
+        folded = true;
+    }
+
+    public void call(int betAmount) {
+        lastCalledBet = betAmount;
+    }
+
+    public boolean hasCalled(int betAmount) {
+        return lastCalledBet >= betAmount;
     }
 
     @Override
