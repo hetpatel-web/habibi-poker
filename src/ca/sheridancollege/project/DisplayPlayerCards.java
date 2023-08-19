@@ -1,8 +1,4 @@
-package ca.sheridancollege.project.view;
-
-import ca.sheridancollege.project.model.PokerPlayer;
-import ca.sheridancollege.project.model.PokerCard;
-import ca.sheridancollege.project.model.PokerHand;
+package ca.sheridancollege.project;
 
 public class DisplayPlayerCards {
 

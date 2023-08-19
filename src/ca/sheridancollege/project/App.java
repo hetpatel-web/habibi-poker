@@ -1,7 +1,4 @@
-package ca.sheridancollege.project.controller;
-
-import ca.sheridancollege.project.view.StartPokerGame;
-import ca.sheridancollege.project.view.WelcomeView;
+package ca.sheridancollege.project;
 
 public class App {
 

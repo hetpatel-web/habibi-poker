@@ -1,9 +1,6 @@
-package ca.sheridancollege.project.view;
+package ca.sheridancollege.project;
 
 import java.util.Scanner;
-
-import ca.sheridancollege.project.controller.PokerGame;
-import ca.sheridancollege.project.model.PokerPlayer;
 
 public class StartPokerGame {
     public static void startGame() {

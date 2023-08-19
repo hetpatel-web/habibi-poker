@@ -1,4 +1,4 @@
-package ca.sheridancollege.project.model;
+package ca.sheridancollege.project;
 
 public class PokerDeck extends GroupOfCards {
 
@@ -13,5 +13,10 @@ public class PokerDeck extends GroupOfCards {
                 getCards().add(new PokerCard(rank, suit));
             }
         }
+    }
+
+    public void reset() {
+        cards.clear();
+        initializeDeck();
     }
 }

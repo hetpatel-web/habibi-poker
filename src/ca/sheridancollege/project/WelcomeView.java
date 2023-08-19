@@ -1,4 +1,4 @@
-package ca.sheridancollege.project.view;
+package ca.sheridancollege.project;
 
 public class WelcomeView {
 

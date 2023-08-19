@@ -1,4 +1,4 @@
-package ca.sheridancollege.project.model;
+package ca.sheridancollege.project;
 
 public class PokerCard extends Card implements Comparable<PokerCard> {
 

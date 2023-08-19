@@ -1,4 +1,4 @@
-package ca.sheridancollege.project.model;
+package ca.sheridancollege.project;
 
 public enum PokerHandRank {
     HIGH_CARD("High Card"),

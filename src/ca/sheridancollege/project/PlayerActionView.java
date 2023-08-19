@@ -1,6 +1,5 @@
-package ca.sheridancollege.project.view;
+package ca.sheridancollege.project;
 
-import ca.sheridancollege.project.model.PokerPlayer;
 import java.util.Scanner;
 
 public class PlayerActionView {
