@@ -6,11 +6,10 @@ import java.util.List;
 public class PokerGame extends Game {
 
     private PokerDeck deck;
-
-    private int bigBlind = 20; // Example big blind amount
-
-    private int currentPlayerIndex; // Index of the player whose turn it is
+    private int blind = 20; // minium bet amount
+    private int dealIndex; // Index of the player whose turn it is
     private int pot; // Amount of chips in the pot
+    private int currentBet = blind; // Minimum bet is the big blind
 
     public PokerGame(String name) {
         super(name);
@@ -18,37 +17,18 @@ public class PokerGame extends Game {
 
     @Override
     public void play() {
-        deck = new PokerDeck();
-        while (!isGameOver()) { // Continue playing rounds until only one player remains
-            playBettingRound();
+        deck = new PokerDeck(); // Create a new deck
+        while (activePlayers() != 1) { // Continue playing rounds until only one player remains
+            playGameRound(); // Play a betting round
         }
-        declareFinalWinner();
+        declareFinalWinner(); // Declare the final winner
     }
 
-    private boolean isGameOver() {
-        return getActivePlayersCount() == 1;
-    }
-
-    private void dealCards() {
-        deck.reset();
-        deck.shuffle(); // Shuffle the deck before dealing cards
-
-        for (Player player : getPlayers()) {
-            List<PokerCard> hand = new ArrayList<>();
-            for (int i = 0; i < 5; i++) { // Deal 5 cards to each player
-                PokerCard card = (PokerCard) deck.getCards().remove(0);
-                hand.add(card);
-            }
-            ((PokerPlayer) player).setHand(new PokerHand(hand));
-        }
-    }
-
-    private void playBettingRound() {
-        int currentBet = bigBlind; // Minimum bet is the big blind
-        currentPlayerIndex = (this.currentPlayerIndex + 1) % getPlayers().size(); // Start from the player after the big
-                                                                                  // blind
-        dealCards();
+    private void playGameRound() {
         boolean allBetsMatch = false;
+
+        dealCards();// Deal cards to players
+        dealIndex = (this.dealIndex + 1) % getPlayers().size(); // Move the deal to next player
 
         while (!allBetsMatch) {
             allBetsMatch = true; // Assume all bets match until proven otherwise
@@ -57,55 +37,21 @@ public class PokerGame extends Game {
                 PokerPlayer pokerPlayer = (PokerPlayer) player;
 
                 if (!pokerPlayer.isEliminated() && !pokerPlayer.hasFolded()) {
-                    // Display player's cards and chip count
-                    DisplayPlayerCards.displayPlayerCards(pokerPlayer);
-                    System.out.println("Chips: " + pokerPlayer.getChips());
-
-                    // Get player action
+                    // Ask player to choose an action
                     int choice = PlayerActionView.getPlayerAction(pokerPlayer, currentBet);
 
                     switch (choice) {
                         case 1: // Bet
-                            int betAmount = PlayerActionView.getBetAmount();
-                            if (betAmount >= currentBet && betAmount <= pokerPlayer.getChips()) {
-                                // Update chip counts and pot
-                                pokerPlayer.deductChips(betAmount);
-                                pot += betAmount;
-                                currentBet = betAmount;
-                                pokerPlayer.call(currentBet); // Update the last called bet
-                            } else {
-                                PlayerActionView.displayInvalidInputMessage();
-                                continue;
-                            }
+                            bet(pokerPlayer, currentBet, pot);
                             break;
                         case 2: // Raise
-                            int raiseAmount = PlayerActionView.getBetAmount();
-                            if (raiseAmount >= currentBet && raiseAmount <= pokerPlayer.getChips()) {
-                                // Update chip counts and pot
-                                pokerPlayer.deductChips(raiseAmount);
-                                pot += raiseAmount;
-                                currentBet = raiseAmount;
-                                pokerPlayer.call(currentBet); // Update the last called bet
-                            } else {
-                                PlayerActionView.displayInvalidInputMessage();
-                                continue;
-                            }
+                            raise(pokerPlayer, currentBet, pot);
                             break;
                         case 3: // Call
-                            int callAmount = currentBet;
-                            if (callAmount <= pokerPlayer.getChips()) {
-                                // Update chip counts and pot
-                                pokerPlayer.deductChips(callAmount);
-                                pot += callAmount;
-                                pokerPlayer.call(currentBet); // Update the last called bet
-                            } else {
-                                PlayerActionView.displayInvalidInputMessage();
-                                continue;
-                            }
+                            call(pokerPlayer, currentBet, pot);
                             break;
                         case 4: // Fold
-                            pokerPlayer.fold(); // Set fold status
-                            System.out.println(pokerPlayer.getName() + " has folded.");
+                            fold(pokerPlayer);
                             break;
                         default:
                             PlayerActionView.displayInvalidInputMessage();
@@ -118,9 +64,6 @@ public class PokerGame extends Game {
                     }
                 }
             }
-
-            // Move to the next player
-            currentPlayerIndex = (currentPlayerIndex + 1) % getPlayers().size();
         }
 
         // Declare a round winner
@@ -128,7 +71,20 @@ public class PokerGame extends Game {
 
         // Eliminate players with no chips left
         eliminatePlayersWithNoChips();
-        // Distribute the pot to the winning player(s) if necessary
+
+    }
+
+    private void dealCards() {
+        deck.reset(); // Reset the deck
+        deck.shuffle(); // Shuffle the deck before dealing cards
+        for (Player player : getPlayers()) {
+            List<PokerCard> hand = new ArrayList<PokerCard>();
+            for (int i = 0; i < 5; i++) { // Deal 5 cards to each player
+                PokerCard card = (PokerCard) deck.getCards().remove(0);
+                hand.add(card);
+            }
+            ((PokerPlayer) player).setHand(new PokerHand(hand));
+        }
     }
 
     private void declareRoundWinner() {
@@ -190,7 +146,7 @@ public class PokerGame extends Game {
         }
     }
 
-    private int getActivePlayersCount() {
+    private int activePlayers() {
         int count = 0;
         for (Player player : getPlayers()) {
             if (!player.isEliminated()) {
@@ -222,4 +178,46 @@ public class PokerGame extends Game {
         }
     }
 
+    private void bet(PokerPlayer pokerPlayer, int currentBet, int pot) {
+        int betAmount = PlayerActionView.getBetAmount();
+        if (betAmount >= currentBet && betAmount <= pokerPlayer.getChips()) {
+            pokerPlayer.deductChips(betAmount);
+            pot += betAmount;
+            updateCurrentBetAndLastCalled(pokerPlayer, betAmount);
+        } else {
+            PlayerActionView.displayInvalidInputMessage();
+        }
+    }
+
+    private void raise(PokerPlayer pokerPlayer, int currentBet, int pot) {
+        int raiseAmount = PlayerActionView.getBetAmount();
+        if (raiseAmount >= currentBet && raiseAmount <= pokerPlayer.getChips()) {
+            pokerPlayer.deductChips(raiseAmount);
+            pot += raiseAmount;
+            updateCurrentBetAndLastCalled(pokerPlayer, raiseAmount);
+        } else {
+            PlayerActionView.displayInvalidInputMessage();
+        }
+    }
+
+    private void call(PokerPlayer pokerPlayer, int currentBet, int pot) {
+        int callAmount = currentBet;
+        if (callAmount <= pokerPlayer.getChips()) {
+            pokerPlayer.deductChips(callAmount);
+            pot += callAmount;
+            updateCurrentBetAndLastCalled(pokerPlayer, callAmount);
+        } else {
+            PlayerActionView.displayInvalidInputMessage();
+        }
+    }
+
+    private void fold(PokerPlayer pokerPlayer) {
+        pokerPlayer.fold();
+        System.out.println(pokerPlayer.getName() + " has folded.");
+    }
+
+    private void updateCurrentBetAndLastCalled(PokerPlayer pokerPlayer, int betAmount) {
+        currentBet = betAmount;
+        pokerPlayer.call(currentBet); // Update the last called bet
+    }
 }

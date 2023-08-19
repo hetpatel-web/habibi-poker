@@ -25,7 +25,16 @@ public class PokerCard extends Card implements Comparable<PokerCard> {
 
     @Override
     public String toString() {
-        // Implement the toString() method to display card information
-        return "StandardCard [rank=" + rank + ", suit=" + suit + "]";
+        String rankString = Rank.values()[rank - 1].toString();
+        String suitString = Suit.values()[suit].toString();
+        return rankString + " of " + suitString;
+    }
+
+    private enum Rank {
+        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
+    }
+
+    private enum Suit {
+        HEARTS, DIAMONDS, CLUBS, SPADES
     }
 }

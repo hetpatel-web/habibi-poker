@@ -6,7 +6,7 @@ public class DisplayPlayerCards {
         System.out.println(player.getName() + "'s Cards:");
         PokerHand hand = player.getHand();
         for (PokerCard card : hand.getCards()) {
-            System.out.println(card);
+            System.out.print(card + "| ");
         }
         System.out.println();
     }
