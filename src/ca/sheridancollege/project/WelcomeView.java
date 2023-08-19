@@ -1,8 +1,13 @@
 package ca.sheridancollege.project;
 
+import ca.sheridancollege.project.Assets.ASCIIArtGenerator;
+import ca.sheridancollege.project.Assets.ASCIIArtGenerator.ASCIIArtFont;
+
 public class WelcomeView {
 
-    public static void displayWelcomeMessage() {
+    public static void displayWelcomeMessage() throws Exception {
+        ASCIIArtGenerator artGen = new ASCIIArtGenerator();
+        artGen.printTextArt("HABIBI POKER", 10,ASCIIArtFont.ART_FONT_DIALOG,"*");
         System.out.println("Welcome to Habibi Poker!");
         System.out.println("==================================");
         System.out.println("Game Rules:");

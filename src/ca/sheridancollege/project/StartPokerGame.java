@@ -12,7 +12,7 @@ public class StartPokerGame {
         int numPlayers = scanner.nextInt();
         scanner.nextLine(); // Consume newline
         for (int i = 0; i < numPlayers; i++) {
-            System.out.print("Enter player name: ");
+            System.out.print("Enter player " + i + 1 + " name: ");
             String playerName = scanner.nextLine();
             pokerGame.getPlayers().add(new PokerPlayer(playerName));
         }
